@@ -1,0 +1,117 @@
+<header class="navbar">
+  <!-- <img class="logo"
+     src="https://toppng.com/uploads/preview/free-logo-design-11551057495oqoep79juj.png"
+     alt="Logo"> -->
+  <img class="logo" src="/animated_logo.gif" alt="Logo">
+
+  <nav>
+    <ul>
+      <li>Portfolio</li>
+      <li>Our Technologies</li>
+      <li>Career</li>
+      <li>Explore Consulting Solutions</li>
+      <li>Discover Insights</li>
+    </ul>
+  </nav>
+  <div class="auth">
+    <span class="search-icon">🔍</span>
+    <a href="#">Sign in</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="overlay"></div>
+
+  <div class="hero-content">
+    <h1>Anything’s possible when you need the solutions</h1>
+    <p>
+      Our skilled candidates, in-demand Applications and the solutions you need to
+      help you do your best work yet.
+    </p>
+
+    <div class="cta-row">
+      <div class="cta-group">
+        <small>GET SERVICES</small>
+        <button class="btn light">Find your requirement</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="cta-group">
+        <small>FOR BUSINESSES</small>
+        <div class="btn-group">
+          <button class="btn dark">Connect with us</button>
+          <button class="btn outline">Explore consulting solutions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- LEFT CONTENT -->
+  <div class="left">
+    <h1>Manage your<br>business money</h1>
+
+    <p>
+      Unlock up to 3.50% APY while keeping deposits safe with millions in FDIC
+      insurance across our partner banks. Enjoy high-yield banking, bill pay,
+      and more—built for modern business.
+    </p>
+
+    <div class="input-group">
+      <input type="email" placeholder="Work Email">
+      <button>Book a Demo</button>
+    </div>
+
+    <div class="features">
+      <span>FDIC Insured</span>
+      <span>No monthly service charge</span>
+      <span>Simple finance controls</span>
+    </div>
+  </div>
+
+  <!-- RIGHT CONTENT -->
+  <div class="right">
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1200" alt="Business">
+      <div class="safe-text">Safe. Secure. Reliable.</div>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Total Balance</h3>
+      <h2>$4,345,890</h2>
+
+      <div class="stats">
+        <div>
+          <div>Money In</div>
+          <strong>$3,345,000</strong>
+        </div>
+        <div>
+          <div>Money Out</div>
+          <strong>$2,345,000</strong>
+        </div>
+        <div>
+          <div>Interest Paid</div>
+          <strong>$23,450</strong>
+        </div>
+      </div>
+
+      @if (isBrowser) {
+        <div class="chart" role="img" aria-label="Weekly trend chart" ngSkipHydration>
+          <canvas
+            baseChart
+            [type]="'line'"
+            [data]="chartData"
+            [options]="chartOptions"
+          ></canvas>
+        </div>
+      } @else {
+        <div class="chart" aria-hidden="true"></div>
+      }
+
+    </div>
+  </div>
+
+</div>

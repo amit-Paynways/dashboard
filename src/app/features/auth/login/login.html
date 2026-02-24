@@ -1,0 +1,41 @@
+<!-- RIGHT SIDE -->
+<div class="vh-100 d-flex justify-content-center align-items-center bg-light">
+<div class="login-card">
+
+    <h3 class="fw-bold mb-2">Hello Again!</h3>
+
+    <p class="text-muted mb-4">
+        Please enter your details.
+    </p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+
+        <!-- EMAIL -->
+        <div class="mb-3">
+            <input type="email" class="form-control modern-input" placeholder="Email" formControlName="email">
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-4 position-relative">
+
+            <input [type]="showPassword ? 'text' : 'password'" class="form-control modern-input" placeholder="Password"
+                formControlName="password">
+
+            <span class="toggle-password" (click)="showPassword = !showPassword">👁</span>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+            <a routerLink="/forgot-password" class="link">
+                Forgot Password?
+            </a>
+            <a routerLink="/register" class="link">
+
+                New User?
+            </a>
+        </div>
+        <button class="btn modern-btn w-100" [disabled]="loading()">
+            {{ loading() ? 'Signing in...' : 'Login' }}
+        </button>
+
+    </form>
+
+</div>

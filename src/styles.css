@@ -1,1 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+
+.left-panel{
+  background: linear-gradient(135deg,#4f46e5,#3b82f6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px;
+}
+
+.hero-content{
+  max-width:420px;
+}
+
+/* GLASS CARD */
+.login-card{
+  width:380px;
+  padding:40px;
+  border-radius:20px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,.12);
+}
+
+/* MODERN INPUT */
+.modern-input{
+  height:55px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  transition: all .25s;
+}
+
+.modern-input:focus{
+  border-color:#4f46e5;
+  box-shadow:0 0 0 4px rgba(79,70,229,.1);
+}
+
+/* BUTTON */
+.modern-btn{
+  height:55px;
+  border:none;
+  border-radius:12px;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #6366f1
+  );
+
+  color:white;
+  font-weight:600;
+  transition:.3s;
+}
+
+.modern-btn:hover{
+  transform: translateY(-2px);
+  box-shadow:0 10px 20px rgba(79,70,229,.3);
+}
+
+/* PASSWORD TOGGLE */
+.toggle-password{
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+}
+.link{
+  text-decoration:none;
+  font-weight:500;
+  color:#4f46e5;
+}
+
+.link:hover{
+  text-decoration:underline;
+}
+
