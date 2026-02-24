@@ -1,0 +1,106 @@
+<div class="shell">
+  <aside class="sidebar" aria-label="Bank navigation">
+    <div class="brand">
+      <div class="brand__mark">Pay<span class="brand__x">X</span></div>
+      <div class="brand__sub">PAYGLOBAL360</div>
+      <div class="brand__pill">BANK PORTAL</div>
+    </div>
+
+    <div class="nav">
+      <div class="nav__group">Operations</div>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'dashboards'" (click)="openBank('dashboards')">
+        Dashboards
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'kyc'" (click)="openBank('kyc')">
+        KYC Review
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'payment_orders'" (click)="openBank('payment_orders')">
+        Payment Orders <span class="nav__pill">12</span>
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'dispatch'" (click)="openBank('dispatch')">
+        Dispatch
+      </button>
+
+      <div class="nav__group">Treasury</div>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'fx_rates'" (click)="openBank('fx_rates')">
+        FX Rates
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'liquidity'" (click)="openBank('liquidity')">
+        Liquidity
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'exposure'" (click)="openBank('exposure')">
+        Exposure
+      </button>
+
+      <div class="nav__group">Compliance</div>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'ofac'" (click)="openBank('ofac')">
+        OFAC Screening <span class="nav__pill nav__pill--danger">3</span>
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'blocked_list'" (click)="openBank('blocked_list')">
+        Blocked List
+      </button>
+
+      <div class="nav__group">System</div>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'config'" (click)="openBank('config')">
+        Config
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'audit'" (click)="openBank('audit')">
+        Audit Log
+      </button>
+      <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'reports'" (click)="openBank('reports')">
+        Reports
+      </button>
+    </div>
+
+    <div class="sidebar__footer" aria-label="Profile">
+      <button class="profile" type="button">
+        <span class="avatar" aria-hidden="true">JM</span>
+        <span class="profile__meta">
+          <span class="profile__name">Jorge Medina</span>
+          <span class="profile__role">Senior Ops Checker</span>
+        </span>
+        <span class="profile__chev" aria-hidden="true">&gt;</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__title">
+        <h1>Bank Dashboards</h1>
+        <span class="topbar__org">Exportadora Global SA de CV</span>
+      </div>
+
+      <div class="topbar__tools">
+        <label class="search search--sm">
+          <span class="search__icon">Search</span>
+          <input class="search__input" type="search" placeholder="Search" />
+        </label>
+        <button class="btn btn--ghost" type="button">Export Report</button>
+      </div>
+    </header>
+
+    <section class="bank" id="bank" aria-label="Bank dashboards">
+      <div class="bank__titlebar">
+        <div class="bank__pills">
+          <span class="bank__pill">Systems Operational</span>
+          <span class="bank__pill bank__pill--warn">2 expiring soon</span>
+        </div>
+      </div>
+
+      <nav class="banktabs" role="tablist" aria-label="Bank dashboard tabs">
+        <a class="banktab" routerLink="operations" routerLinkActive="banktab--active" [routerLinkActiveOptions]="{ exact: true }">
+          5.10.2 Operations
+        </a>
+        <a class="banktab" routerLink="treasury" routerLinkActive="banktab--active" [routerLinkActiveOptions]="{ exact: true }">
+          5.10.3 Treasury / Liquidity
+        </a>
+        <a class="banktab" routerLink="compliance" routerLinkActive="banktab--active" [routerLinkActiveOptions]="{ exact: true }">
+          5.10.4 Compliance
+        </a>
+      </nav>
+
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

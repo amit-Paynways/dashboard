@@ -3,6 +3,13 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 export const routes: Routes = [
 
+  // ✅ COMPAT: /home/dashboard -> /dashboard
+  {
+    path: 'home/dashboard',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+
   // ✅ AUTH ROUTES
   {
     path: '',
@@ -39,6 +46,45 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/home/home')
         .then(m => m.Home)
+  },
+
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/dashboard/dashboard')
+        .then(m => m.Dashboard)
+  },
+
+  {
+    path: 'bank-dashboard',
+    loadComponent: () =>
+      import('./features/bank-dashboard/bank-dashboard')
+        .then(m => m.BankDashboard),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'operations',
+      },
+      {
+        path: 'operations',
+        loadComponent: () =>
+          import('./features/bank-dashboard/operations/bank-operations')
+            .then(m => m.BankOperationsDashboard),
+      },
+      {
+        path: 'treasury',
+        loadComponent: () =>
+          import('./features/bank-dashboard/treasury/bank-treasury')
+            .then(m => m.BankTreasuryDashboard),
+      },
+      {
+        path: 'compliance',
+        loadComponent: () =>
+          import('./features/bank-dashboard/compliance/bank-compliance')
+            .then(m => m.BankComplianceDashboard),
+      },
+    ],
   }
 
 ];

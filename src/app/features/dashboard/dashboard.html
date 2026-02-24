@@ -1,0 +1,278 @@
+<div class="shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="brand__mark">PAY<span class="brand__x">X</span></div>
+      <div class="brand__sub">PAYGLOBAL360</div>
+    </div>
+
+    <div class="nav">
+      <div class="nav__group">Main</div>
+      <button
+        class="nav__item nav__item--btn nav__item--active nav__item--toggle"
+        type="button"
+        aria-controls="dashboard-submenu"
+        [attr.aria-expanded]="dashboardMenuOpen()"
+        (click)="dashboardMenuOpen.set(!dashboardMenuOpen())"
+      >
+        <span>Dashboard</span>
+        <span class="nav__chev" [class.nav__chev--open]="dashboardMenuOpen()">›</span>
+      </button>
+      <div
+        id="dashboard-submenu"
+        class="nav__submenu"
+        [class.nav__submenu--open]="dashboardMenuOpen()"
+      >
+        <a class="nav__item nav__item--sub" routerLink="/dashboard">Overview</a>
+        <a class="nav__item nav__item--sub" routerLink="/bank-dashboard">Bank Dashboard</a>
+        <a class="nav__item nav__item--sub" href="#">Reports</a>
+      </div>
+      <a class="nav__item" href="#">Payments <span class="nav__pill">3</span></a>
+      <a class="nav__item" href="#">New Outward</a>
+      <a class="nav__item" href="#">New Inward</a>
+
+      <div class="nav__group">Manage</div>
+      <a class="nav__item" href="#">Recipients</a>
+      <a class="nav__item" href="#">Bank Accounts</a>
+      <a class="nav__item" href="#">Users</a>
+
+      <div class="nav__group">Insights</div>
+      <a class="nav__item" href="#">Reports</a>
+      <a class="nav__item" href="#">History</a>
+    </div>
+
+    <div class="sidebar__footer" aria-label="Profile">
+      <button class="profile" type="button">
+        <span class="avatar" aria-hidden="true">AS</span>
+        <span class="profile__meta">
+          <span class="profile__name">AMIT SINGH</span>
+          <span class="profile__role">Admin • Exportadora SA</span>
+        </span>
+        <span class="profile__chev" aria-hidden="true">›</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__title">
+        <h1>Dashboard</h1>
+        <span class="topbar__org">Exportadora Global SA de CV</span>
+      </div>
+
+      <div class="topbar__tools">
+        <label class="search">
+          <span class="search__icon">Search</span>
+          <input class="search__input" type="search" placeholder="Search" />
+        </label>
+        <button class="btn btn--amber" type="button">New Outward</button>
+        <button class="btn btn--blue" type="button">New Inward</button>
+        <button class="btn btn--ghost" type="button" aria-label="Notifications">!</button>
+      </div>
+    </header>
+
+    <div class="notice" role="status">
+      <div class="notice__left">
+        <span class="notice__icon">!</span>
+        <span class="notice__text">
+          Action Required: Payment REF-8821 (USD 14,250) awaiting your fund transfer to CPay. Rate expires in
+        </span>
+      </div>
+      <span class="notice__time">{{ rateExpiresIn }}</span>
+    </div>
+
+    <section class="kpis" aria-label="Summary">
+      @for (kpi of kpis; track kpi.label) {
+        <div class="card">
+          <div class="card__label">{{ kpi.label }}</div>
+          <div class="card__value">
+            <div class="card__big">{{ kpi.value }}</div>
+            @if (kpi.unit) {
+              <div class="card__unit">{{ kpi.unit }}</div>
+            }
+          </div>
+          <div class="card__delta" [class.card__delta--danger]="kpi.danger">{{ kpi.delta }}</div>
+        </div>
+      }
+    </section>
+
+    <section class="grid" aria-label="Charts">
+      <div class="panel">
+        <div class="panel__head">
+          <div>
+            <div class="panel__title">Payment Volume Trend</div>
+            <div class="panel__sub">Last 6 months • MXN</div>
+          </div>
+        </div>
+
+        @if (isBrowser) {
+          <div class="panel__chart" ngSkipHydration>
+            <canvas baseChart [type]="'bar'" [data]="volumeChartData" [options]="volumeChartOptions"></canvas>
+          </div>
+        } @else {
+          <div class="panel__chart panel__chart--skeleton" aria-hidden="true"></div>
+        }
+
+        <div class="legend">
+          <span class="legend__item">
+            <span class="legend__dot legend__dot--blue"></span>
+            Outward (MXN)
+          </span>
+          <span class="legend__item">
+            <span class="legend__dot legend__dot--green"></span>
+            Inward (MXN)
+          </span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__head">
+          <div>
+            <div class="panel__title">Payments by Status</div>
+            <div class="panel__sub">All time • 24 this month</div>
+          </div>
+        </div>
+
+        <div class="status">
+          @if (isBrowser) {
+            <div class="status__chart" ngSkipHydration>
+              <canvas baseChart [type]="'doughnut'" [data]="statusChartData" [options]="statusChartOptions"></canvas>
+              <div class="status__center">
+                <div class="status__num">{{ statusTotal }}</div>
+                <div class="status__lbl">total</div>
+              </div>
+            </div>
+          } @else {
+            <div class="status__chart status__chart--skeleton" aria-hidden="true"></div>
+          }
+
+          <div class="status__list">
+            @for (row of status; track row.label) {
+              <div class="status__row">
+                <span class="status__name">
+                  <span class="status__swatch" [style.background]="row.color"></span>
+                  {{ row.label }}
+                </span>
+                <span class="status__value">{{ row.value }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__head">
+          <div>
+            <div class="panel__title">Live FX Rates</div>
+            <div class="panel__sub">Updated 3 min ago • Valid 20h 57m</div>
+          </div>
+        </div>
+
+        <div class="fx">
+          @for (row of fxRows; track row.pair) {
+            <div class="fx__row">
+              <div class="fx__pair">{{ row.pair }}</div>
+              <div class="fx__rate">{{ row.rate }}</div>
+              <div class="fx__spark" aria-hidden="true">
+                <svg viewBox="0 0 72 22" preserveAspectRatio="none">
+                  <polyline [attr.points]="row.sparkPoints" class="fx__line" [class.fx__line--down]="row.delta.startsWith('-')"></polyline>
+                </svg>
+              </div>
+              <div class="fx__delta" [class.fx__delta--down]="row.delta.startsWith('-')">{{ row.delta }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="content" aria-label="Dashboard content">
+      <div class="col col--left">
+        <div class="panel">
+          <div class="panel__head panel__head--tight">
+            <div class="panel__title">Quick Actions</div>
+          </div>
+
+          <div class="quick">
+            @for (item of quickActions; track item.label) {
+              <button class="quick__item" type="button">
+                <span class="quick__icon" [attr.data-i]="item.icon"></span>
+                <span class="quick__text">{{ item.label }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head panel__head--tight">
+            <div class="panel__title">Pending Actions</div>
+            <div class="panel__sub">3 items</div>
+          </div>
+
+          <div class="pending">
+            @for (row of pending; track row.title) {
+              <div class="pending__item">
+                <div class="pending__title">{{ row.title }}</div>
+                <div class="pending__detail">{{ row.detail }}</div>
+                <div class="pending__cta">
+                  <button class="pending__btn" type="button" [class.pending__btn--warn]="row.tone === 'warn'">
+                    {{ row.action }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col col--right">
+        <div class="panel panel--list">
+          <div class="panel__head">
+            <div class="panel__title">Recent Payment Activity</div>
+            <a class="panel__link" href="#">View all &rarr;</a>
+          </div>
+
+          <div class="paylist">
+            @for (p of payments; track p.ref) {
+              <div class="payrow">
+                <div class="payrow__icon" [attr.data-i]="p.icon"></div>
+                <div class="payrow__main">
+                  <div class="payrow__name">{{ p.name }}</div>
+                  <div class="payrow__meta">
+                    <span>{{ p.ref }}</span>
+                    <span class="dot">&bull;</span>
+                    <span>{{ p.via }}</span>
+                    <span class="dot">&bull;</span>
+                    <span>{{ p.direction }}</span>
+                  </div>
+                </div>
+
+                <div class="payrow__status">
+                  <span class="pill" [attr.data-tone]="p.tone">{{ p.status }}</span>
+                </div>
+
+                <div class="payrow__amt">
+                  <div class="payrow__money">{{ p.amount }}</div>
+                  <div class="payrow__date">{{ p.date }}</div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="volume">
+            <div class="volume__head">VOLUME BY CURRENCY (THIS MONTH - MXN EQUIV.)</div>
+            <div class="volume__rows">
+              @for (row of currencyVolumes; track row.label) {
+                <div class="vrow">
+                  <div class="vrow__label">{{ row.label }}</div>
+                  <div class="vrow__bar">
+                    <div class="vrow__fill" [style.background]="row.color" [style.width.%]="(row.value / maxCurrencyVolume) * 100"></div>
+                  </div>
+                  <div class="vrow__value">{{ row.valueText }}</div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

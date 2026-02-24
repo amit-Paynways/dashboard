@@ -1,0 +1,107 @@
+<section class="bank__kpis" aria-label="Treasury summary">
+  @for (kpi of treasuryKpis; track kpi.label) {
+    <div class="card card--bank">
+      <div class="card__label">{{ kpi.label }}</div>
+      <div class="card__value">
+        <div class="card__big">{{ kpi.value }}</div>
+      </div>
+      <div class="card__delta">{{ kpi.delta }}</div>
+    </div>
+  }
+</section>
+
+<section class="bank__grid bank__grid--treasury" aria-label="Treasury content">
+  <div class="panel panel--span2" id="treasury-liquidity">
+    <div class="panel__head">
+      <div class="panel__title">Real-Time Liquidity Position</div>
+    </div>
+    <div class="table">
+      <div class="trow thead">
+        <div>Currency</div>
+        <div>Balance</div>
+        <div>Inflow today</div>
+        <div>Outflow today</div>
+        <div>Net position</div>
+        <div>% of limit</div>
+      </div>
+      @for (row of liquidityRows; track row.ccy) {
+        <div class="trow">
+          <div class="ccy">{{ row.ccy }}</div>
+          <div class="num">{{ row.balance }}</div>
+          <div class="num ok">{{ row.inflow }}</div>
+          <div class="num bad">{{ row.outflow }}</div>
+          <div class="num">{{ row.net }}</div>
+          <div class="num">{{ row.pct }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel" id="treasury-fx">
+    <div class="panel__head">
+      <div class="panel__title">FX Rate Monitor</div>
+      <span class="bank__pill">Live feed</span>
+    </div>
+    <div class="fx">
+      @for (row of fxRows; track row.pair) {
+        <div class="fx__row">
+          <div class="fx__pair">{{ row.pair }}</div>
+          <div class="fx__rate">{{ row.rate }}</div>
+          <div class="fx__spark" aria-hidden="true">
+            <svg viewBox="0 0 72 22" preserveAspectRatio="none">
+              <polyline [attr.points]="row.sparkPoints" class="fx__line" [class.fx__line--down]="row.delta.startsWith('-')"></polyline>
+            </svg>
+          </div>
+          <div class="fx__delta" [class.fx__delta--down]="row.delta.startsWith('-')">{{ row.delta }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel panel--span2">
+    <div class="panel__head">
+      <div class="panel__title">Settlement Obligations</div>
+      <div class="panel__sub">Due today - before 17:00 MXT</div>
+    </div>
+    <div class="list">
+      @for (row of settlementObligations; track row.label) {
+        <div class="list__row">
+          <div>
+            <div class="list__name">{{ row.label }}</div>
+            @if (row.detail) {
+              <div class="list__meta">{{ row.detail }}</div>
+            }
+          </div>
+          <div class="list__right">
+            <div class="list__name num">{{ row.valueText }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel panel--span2" id="treasury-exposure">
+    <div class="panel__head">
+      <div class="panel__title">Currency Exposure vs Limits</div>
+      <div class="panel__sub">Daily remittance limit utilization</div>
+    </div>
+    <div class="limits">
+      @for (row of exposureLimits; track row.ccy) {
+        <div class="limit">
+          <div class="limit__left">
+            <span class="pill pill--muted">{{ row.ccy }}</span>
+            <span class="limit__pct">{{ row.pct }}%</span>
+            <span class="pill" [attr.data-tone]="row.pill">
+              @if (row.pill === 'warn') { WARNING } @else { OK }
+            </span>
+          </div>
+          <div class="limit__bar">
+            <div class="limit__fill" [style.width.%]="row.pct"></div>
+          </div>
+          <div class="limit__right">{{ row.amount }} / {{ row.limit }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+

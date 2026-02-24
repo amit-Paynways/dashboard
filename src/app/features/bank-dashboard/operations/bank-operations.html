@@ -1,0 +1,132 @@
+<section class="bank__kpis" aria-label="Bank summary">
+  @for (kpi of bankKpis; track kpi.label) {
+    <div class="card card--bank">
+      <div class="card__label">{{ kpi.label }}</div>
+      <div class="card__value">
+        <div class="card__big">{{ kpi.value }}</div>
+        <div class="card__unit">{{ kpi.unit }}</div>
+      </div>
+      <div class="card__delta">{{ kpi.delta }}</div>
+    </div>
+  }
+</section>
+
+<section class="bank__grid" aria-label="Operations content">
+  <div class="panel" id="bank-kyc">
+    <div class="panel__head">
+      <div class="panel__title">KYC Applications Queue</div>
+      <a class="panel__link" href="#">View all &rarr;</a>
+    </div>
+    <div class="list">
+      @for (row of kycQueue; track row.name) {
+        <div class="list__row">
+          <div class="list__name">{{ row.name }}</div>
+          <span class="pill pill--muted">{{ row.tag }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel" id="bank-orders">
+    <div class="panel__head">
+      <div class="panel__title">Payment Orders - Pending Review</div>
+      <span class="bank__pill">12 pending</span>
+    </div>
+    <div class="list">
+      @for (row of paymentOrders; track row.name) {
+        <div class="list__row">
+          <div class="list__name">{{ row.name }}</div>
+          <span class="pill" [attr.data-tone]="row.pill">{{ row.status }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__head">
+      <div class="panel__title">Expiring Orders</div>
+      <span class="bank__pill bank__pill--warn">2 critical</span>
+    </div>
+    <div class="list">
+      @for (row of expiringOrders; track row.ref) {
+        <div class="list__row list__row--split">
+          <div>
+            <div class="list__name">{{ row.ref }}</div>
+            <div class="list__meta">{{ row.amount }}</div>
+          </div>
+          <div class="list__right">
+            <div class="list__meta">expires</div>
+            <div class="list__time">{{ row.expiresIn }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel panel--span2">
+    <div class="panel__head">
+      <div class="panel__title">OFAC / Compliance Alerts</div>
+      <span class="bank__pill bank__pill--warn">3 requiring action</span>
+    </div>
+    <div class="alerts">
+      @for (row of complianceAlerts; track row.title) {
+        <div class="alert">
+          <div class="alert__title">{{ row.title }}</div>
+          <div class="alert__meta">{{ row.meta }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__head">
+      <div>
+        <div class="panel__title">Top Customers - Feb</div>
+        <div class="panel__sub">MXN equiv.</div>
+      </div>
+    </div>
+    <div class="bars">
+      @for (row of topCustomers; track row.name) {
+        <div class="bar">
+          <div class="bar__label">{{ row.name }}</div>
+          <div class="bar__track">
+            <div class="bar__fill" [style.width.%]="(row.value / maxTopCustomer) * 100"></div>
+          </div>
+          <div class="bar__value">{{ row.valueText }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__head">
+      <div class="panel__title">Dispatch Activity</div>
+    </div>
+    <div class="mini">
+      @for (row of dispatch; track row.label) {
+        <div class="mini__item">
+          <div class="mini__value">{{ row.value }}</div>
+          <div class="mini__label">{{ row.label }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="panel panel--span2" id="bank-rails">
+    <div class="panel__head">
+      <div class="panel__title">Payment Volume by Rail - This Month</div>
+    </div>
+    <div class="rails">
+      @for (row of rails; track row.label) {
+        <div class="rail">
+          <div class="rail__label">{{ row.label }}</div>
+          <div class="rail__track">
+            <div class="rail__fill" [style.width.%]="(row.value / maxRail) * 100" [style.background]="row.color"></div>
+          </div>
+          <div class="rail__value">{{ row.valueText }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
