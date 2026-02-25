@@ -191,7 +191,7 @@ body {
 }
 
 .features span::before {
-  content: "✔";
+  content: "\\2713";
   color: #00b050;
   font-weight: bold;
 }

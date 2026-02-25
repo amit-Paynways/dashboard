@@ -1,8 +1,9 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnDestroy, PLATFORM_ID, inject, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { PaymentsTable } from '../payments/payments-table/payments-table';
 
 function toSparkPoints(values: readonly number[], width = 72, height = 22, padding = 2): string {
   if (values.length === 0) return '';
@@ -22,13 +23,57 @@ function toSparkPoints(values: readonly number[], width = 72, height = 22, paddi
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, BaseChartDirective],
+  imports: [CommonModule, RouterModule, BaseChartDirective, PaymentsTable],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
+  host: {
+    '(document:keydown.escape)': 'closePopups()',
+  },
 })
 export class Dashboard implements OnDestroy {
+  private readonly router = inject(Router);
   readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly dashboardMenuOpen = signal(false);
+  readonly outwardPopupOpen = signal(false);
+  readonly inwardPopupOpen = signal(false);
+
+  private prevBodyOverflow: string | null = null;
+
+  openMainDashboard(): void {
+    this.dashboardMenuOpen.set(true);
+    this.router.navigateByUrl('/dashboard');
+  }
+
+  openOutwardPopup(): void {
+    this.outwardPopupOpen.set(true);
+    this.inwardPopupOpen.set(false);
+    this.lockBodyScroll(true);
+  }
+
+  openInwardPopup(): void {
+    this.inwardPopupOpen.set(true);
+    this.outwardPopupOpen.set(false);
+    this.lockBodyScroll(true);
+  }
+
+  closePopups(): void {
+    if (!this.outwardPopupOpen() && !this.inwardPopupOpen()) return;
+    this.outwardPopupOpen.set(false);
+    this.inwardPopupOpen.set(false);
+    this.lockBodyScroll(false);
+  }
+
+  private lockBodyScroll(locked: boolean): void {
+    if (!this.isBrowser) return;
+
+    if (locked) {
+      if (this.prevBodyOverflow === null) this.prevBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    } else {
+      if (this.prevBodyOverflow !== null) document.body.style.overflow = this.prevBodyOverflow;
+      this.prevBodyOverflow = null;
+    }
+  }
 
   private readonly rateExpiryAt = Date.now() + 14 * 60 * 60 * 1000 + 32 * 60 * 1000;
   private readonly timer =
@@ -52,6 +97,7 @@ export class Dashboard implements OnDestroy {
 
   ngOnDestroy(): void {
     if (this.timer !== null) window.clearInterval(this.timer);
+    this.lockBodyScroll(false);
   }
 
   readonly kpis = [

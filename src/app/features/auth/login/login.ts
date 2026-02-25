@@ -18,7 +18,7 @@ import { RouterModule } from '@angular/router';
 
 export class LoginComponent {
 
-  private fb = inject(FormBuilder); // ✅ available immediately
+  private fb = inject(FormBuilder); // available immediately
 
   loading = signal(false);
   showPassword = false;

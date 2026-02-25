@@ -1,8 +1,9 @@
 <div class="shell">
   <aside class="sidebar" aria-label="Primary navigation">
     <div class="brand">
+       <div class="brand__sub">PAYGLOBAL360</div>
       <div class="brand__mark">PAY<span class="brand__x">X</span></div>
-      <div class="brand__sub">PAYGLOBAL360</div>
+     
     </div>
 
     <div class="nav">
@@ -12,10 +13,10 @@
         type="button"
         aria-controls="dashboard-submenu"
         [attr.aria-expanded]="dashboardMenuOpen()"
-        (click)="dashboardMenuOpen.set(!dashboardMenuOpen())"
+        (click)="openMainDashboard()"
       >
         <span>Dashboard</span>
-        <span class="nav__chev" [class.nav__chev--open]="dashboardMenuOpen()">›</span>
+        <span class="nav__chev" [class.nav__chev--open]="dashboardMenuOpen()">&rsaquo;</span>
       </button>
       <div
         id="dashboard-submenu"
@@ -26,9 +27,9 @@
         <a class="nav__item nav__item--sub" routerLink="/bank-dashboard">Bank Dashboard</a>
         <a class="nav__item nav__item--sub" href="#">Reports</a>
       </div>
-      <a class="nav__item" href="#">Payments <span class="nav__pill">3</span></a>
-      <a class="nav__item" href="#">New Outward</a>
-      <a class="nav__item" href="#">New Inward</a>
+      <a class="nav__item" routerLink="/payments">Payments <span class="nav__pill">3</span></a>
+      <button class="nav__item nav__item--btn" type="button" (click)="openOutwardPopup()">New Outward</button>
+      <button class="nav__item nav__item--btn" type="button" (click)="openInwardPopup()">New Inward</button>
 
       <div class="nav__group">Manage</div>
       <a class="nav__item" href="#">Recipients</a>
@@ -45,9 +46,9 @@
         <span class="avatar" aria-hidden="true">AS</span>
         <span class="profile__meta">
           <span class="profile__name">AMIT SINGH</span>
-          <span class="profile__role">Admin • Exportadora SA</span>
+          <span class="profile__role">Admin &bull; Exportadora SA</span>
         </span>
-        <span class="profile__chev" aria-hidden="true">›</span>
+        <span class="profile__chev" aria-hidden="true">&rsaquo;</span>
       </button>
     </div>
   </aside>
@@ -64,11 +65,53 @@
           <span class="search__icon">Search</span>
           <input class="search__input" type="search" placeholder="Search" />
         </label>
-        <button class="btn btn--amber" type="button">New Outward</button>
-        <button class="btn btn--blue" type="button">New Inward</button>
+        <button class="btn btn--amber" type="button" (click)="openOutwardPopup()">New Outward</button>
+        <button class="btn btn--blue" type="button" (click)="openInwardPopup()">New Inward</button>
         <button class="btn btn--ghost" type="button" aria-label="Notifications">!</button>
       </div>
     </header>
+
+    @if (outwardPopupOpen()) {
+      <div class="modal" role="dialog" aria-modal="true" aria-label="New outward payments" (click)="closePopups()">
+        <div class="modal__dialog" data-tone="amber" (click)="$event.stopPropagation()">
+          <div class="modal__head">
+            <div>
+              <div class="modal__title">New Outward</div>
+              <div class="modal__sub">Choose an outward payment from the list</div>
+            </div>
+            <div class="modal__actions">
+              <a class="modal__link" [routerLink]="['/payments']" [queryParams]="{ flow: 'outward' }">Open full page</a>
+              <button class="iconbtn" type="button" (click)="closePopups()" aria-label="Close">x</button>
+            </div>
+          </div>
+
+          <div class="modal__body">
+            <app-payments-table flow="outward" [embedded]="true"></app-payments-table>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (inwardPopupOpen()) {
+      <div class="modal" role="dialog" aria-modal="true" aria-label="New inward payments" (click)="closePopups()">
+        <div class="modal__dialog" data-tone="blue" (click)="$event.stopPropagation()">
+          <div class="modal__head">
+            <div>
+              <div class="modal__title">New Inward</div>
+              <div class="modal__sub">Choose an inward payment from the list</div>
+            </div>
+            <div class="modal__actions">
+              <a class="modal__link" [routerLink]="['/payments']" [queryParams]="{ flow: 'inward' }">Open full page</a>
+              <button class="iconbtn" type="button" (click)="closePopups()" aria-label="Close">x</button>
+            </div>
+          </div>
+
+          <div class="modal__body">
+            <app-payments-table flow="inward" [embedded]="true"></app-payments-table>
+          </div>
+        </div>
+      </div>
+    }
 
     <div class="notice" role="status">
       <div class="notice__left">
@@ -100,7 +143,7 @@
         <div class="panel__head">
           <div>
             <div class="panel__title">Payment Volume Trend</div>
-            <div class="panel__sub">Last 6 months • MXN</div>
+            <div class="panel__sub">Last 6 months &bull; MXN</div>
           </div>
         </div>
 
@@ -128,7 +171,7 @@
         <div class="panel__head">
           <div>
             <div class="panel__title">Payments by Status</div>
-            <div class="panel__sub">All time • 24 this month</div>
+            <div class="panel__sub">All time &bull; 24 this month</div>
           </div>
         </div>
 
@@ -163,7 +206,7 @@
         <div class="panel__head">
           <div>
             <div class="panel__title">Live FX Rates</div>
-            <div class="panel__sub">Updated 3 min ago • Valid 20h 57m</div>
+            <div class="panel__sub">Updated 3 min ago &bull; Valid 20h 57m</div>
           </div>
         </div>
 

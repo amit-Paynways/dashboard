@@ -1,0 +1,91 @@
+<section class="panel" [class.panel--embedded]="embedded" aria-label="Payments list">
+  <div class="panel__head">
+    <div class="tabs" role="tablist" aria-label="Currencies">
+      <button class="tab" type="button" [class.tab--active]="activeTab() === 'All'" (click)="setTab('All')">All</button>
+      <button class="tab" type="button" [class.tab--active]="activeTab() === 'USD'" (click)="setTab('USD')">USD</button>
+      <button class="tab" type="button" [class.tab--active]="activeTab() === 'AUD'" (click)="setTab('AUD')">AUD</button>
+      <button class="tab" type="button" [class.tab--active]="activeTab() === 'NGN'" (click)="setTab('NGN')">NGN</button>
+      <button class="tab" type="button" [class.tab--active]="activeTab() === 'GBP'" (click)="setTab('GBP')">GBP</button>
+    </div>
+
+    <div class="panel__tools">
+      <label class="search">
+        <span class="search__icon">Search</span>
+        <input
+          class="search__input"
+          type="search"
+          placeholder="Search here..."
+          [value]="query()"
+          (input)="query.set(($any($event.target)).value); page.set(1)"
+        />
+      </label>
+
+      <label class="filter">
+        <span class="filter__label">Filter by:</span>
+        <select class="filter__select" [value]="statusFilter()" (change)="statusFilter.set(($any($event.target)).value); page.set(1)">
+          <option>All Transactions</option>
+          <option>Success</option>
+          <option>Pending</option>
+          <option>Failed</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="thead">
+      <div>Name</div>
+      <div>Date and Time</div>
+      <div>Recipient Country</div>
+      <div class="num">Amount</div>
+      <div>Status</div>
+      <div></div>
+    </div>
+
+    @for (row of pageRows(); track row.email + row.dateTime + row.status) {
+      <div class="trow">
+        <div class="namecell">
+          <div class="avatar" aria-hidden="true">{{ row.initials }}</div>
+          <div class="who">
+            <div class="who__name">{{ row.name }}</div>
+            <div class="who__email">{{ row.email }}</div>
+          </div>
+        </div>
+
+        <div class="muted">{{ row.dateTime }}</div>
+        <div class="muted">{{ row.country }}</div>
+        <div class="num">{{ row.amount }}</div>
+
+        <div>
+          <span class="status" [attr.data-tone]="row.status.toLowerCase()">{{ row.status }}</span>
+        </div>
+
+        <button class="more" type="button" aria-label="More">...</button>
+      </div>
+    }
+  </div>
+
+  <div class="tfoot">
+    <div class="rowsize">
+      <span class="muted">Rows per Page</span>
+      <select class="rowsize__select" [value]="pageSize()" (change)="setPageSize(+$any($event.target).value)">
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+      </select>
+    </div>
+
+    <div class="pager">
+      <button class="pager__btn" type="button" (click)="prev()">Prev</button>
+      <span class="pager__meta">{{ page() }} / {{ totalPages() }}</span>
+      <button class="pager__btn" type="button" (click)="next()">Next</button>
+    </div>
+
+    <div class="muted">
+      Showing
+      {{ (page() - 1) * pageSize() + 1 }}-{{ Math.min(page() * pageSize(), filtered().length) }}
+      of {{ filtered().length }}
+    </div>
+  </div>
+</section>
+

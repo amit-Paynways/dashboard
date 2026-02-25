@@ -7,9 +7,12 @@
     </div>
 
     <div class="nav">
+      <div class="nav__group">Main</div>
+      <a class="nav__item nav__item--btn" routerLink="/dashboard">Dashboard</a>
+
       <div class="nav__group">Operations</div>
       <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'dashboards'" (click)="openBank('dashboards')">
-        Dashboards
+        Bank Dashboards
       </button>
       <button class="nav__item nav__item--btn" type="button" [class.nav__item--active]="bankNav() === 'kyc'" (click)="openBank('kyc')">
         KYC Review

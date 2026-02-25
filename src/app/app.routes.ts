@@ -3,14 +3,14 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 export const routes: Routes = [
 
-  // ✅ COMPAT: /home/dashboard -> /dashboard
+  // COMPAT: /home/dashboard -> /dashboard
   {
     path: 'home/dashboard',
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
 
-  // ✅ AUTH ROUTES
+  // AUTH ROUTES
   {
     path: '',
     component: AuthLayout,
@@ -40,7 +40,7 @@ export const routes: Routes = [
     ]
   },
 
-  // ✅ HOME / LANDING (OUTSIDE AUTH)
+  // HOME / LANDING (OUTSIDE AUTH)
   {
     path: 'home',
     loadComponent: () =>
@@ -53,6 +53,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/dashboard')
         .then(m => m.Dashboard)
+  },
+
+  {
+    path: 'payments',
+    loadComponent: () =>
+      import('./features/payments/payments')
+        .then(m => m.Payments)
   },
 
   {

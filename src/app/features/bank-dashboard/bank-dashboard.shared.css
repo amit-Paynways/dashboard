@@ -393,6 +393,7 @@
 .card__value {
   display: flex;
   align-items: baseline;
+  color: white;
   gap: 8px;
   margin-top: 10px;
 }

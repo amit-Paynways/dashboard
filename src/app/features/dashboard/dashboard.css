@@ -304,6 +304,112 @@
   padding: 8px 10px;
 }
 
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(237, 242, 255, 0.10);
+  background: rgba(237, 242, 255, 0.04);
+  color: rgba(237, 242, 255, 0.9);
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.iconbtn:hover {
+  background: rgba(237, 242, 255, 0.06);
+  border-color: rgba(237, 242, 255, 0.16);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(6, 10, 20, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.modal__dialog {
+  width: min(1180px, calc(100vw - 36px));
+  max-height: min(88vh, 860px);
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(237, 242, 255, 0.12);
+  background: rgba(17, 26, 46, 0.92);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  position: relative;
+}
+
+.modal__dialog::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(237, 242, 255, 0.12);
+}
+
+.modal__dialog[data-tone='amber']::before {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(245, 158, 11, 0.15));
+}
+
+.modal__dialog[data-tone='blue']::before {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.95), rgba(59, 130, 246, 0.15));
+}
+
+.modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 14px 10px;
+}
+
+.modal__title {
+  font-weight: 950;
+  font-size: 16px;
+  letter-spacing: 0.15px;
+}
+
+.modal__sub {
+  margin-top: 4px;
+  color: rgba(237, 242, 255, 0.55);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal__link {
+  color: rgba(191, 219, 254, 0.98);
+  font-weight: 900;
+  text-decoration: none;
+  background: rgba(59, 130, 246, 0.10);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  padding: 8px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.modal__link:hover {
+  background: rgba(59, 130, 246, 0.16);
+  border-color: rgba(59, 130, 246, 0.32);
+}
+
+.modal__body {
+  padding: 8px 14px 14px;
+}
+
 .notice {
   display: flex;
   align-items: center;
@@ -370,6 +476,7 @@
 .card__value {
   display: flex;
   align-items: baseline;
+  color: white;
   gap: 8px;
   margin-top: 10px;
 }
