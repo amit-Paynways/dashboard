@@ -1,0 +1,149 @@
+<div class="shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="brand__sub">PAYGLOBAL360</div>
+      <div class="brand__mark">PAY<span class="brand__x">X</span></div>
+    </div>
+
+    <div class="nav">
+      <div class="nav__group">Main</div>
+      <a class="nav__item" routerLink="/dashboard">Dashboard</a>
+      <a class="nav__item" routerLink="/payments">Payments</a>
+
+      <div class="nav__group">Manage</div>
+      <a class="nav__item" routerLink="/recipients">Recipients</a>
+      <a class="nav__item" routerLink="/bank-accounts">Bank Accounts</a>
+      <a class="nav__item nav__item--active" routerLink="/users">Users</a>
+
+      <div class="nav__group">Insights</div>
+      <a class="nav__item" routerLink="/reports">Reports</a>
+      <a class="nav__item" routerLink="/history">History</a>
+
+      <div class="nav__group">Bank Portal</div>
+      <a class="nav__item" routerLink="/bank-dashboard">Bank Dashboard</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__title">
+        <a class="back" routerLink="/users">&lt; Back</a>
+        <div>
+          <h1>User</h1>
+          <span class="topbar__org">Exportadora Global SA de CV</span>
+        </div>
+      </div>
+
+      @if (user(); as u) {
+        <div class="topbar__tools">
+          <span class="pill" [attr.data-tone]="u.status.toLowerCase()">{{ u.status }}</span>
+          <button class="btn btn--ghost" type="button">Reset Password</button>
+          <button class="btn btn--ghost" type="button">Edit</button>
+        </div>
+      }
+    </header>
+
+    @if (!user()) {
+      <section class="panel">
+        <div class="empty__title">User not found</div>
+        <div class="empty__sub">Try opening a user from the list.</div>
+        <a class="btn btn--ghost" routerLink="/users">Go to Users</a>
+      </section>
+    } @else {
+      <section class="grid" aria-label="User details">
+        <div class="panel">
+          <div class="panel__head">
+            <div class="panel__title">Profile</div>
+            <a class="panel__link" routerLink="/history">View history</a>
+          </div>
+
+          <div class="profile">
+            <div class="avatar" aria-hidden="true">{{ user()!.initials }}</div>
+            <div class="who">
+              <div class="who__name">{{ user()!.name }}</div>
+              <div class="who__email">{{ user()!.email }}</div>
+            </div>
+          </div>
+
+          <div class="kv">
+            <div class="kv__row">
+              <div class="kv__k">Role</div>
+              <div class="kv__v">{{ user()!.role }}</div>
+            </div>
+            <div class="kv__row">
+              <div class="kv__k">Team</div>
+              <div class="kv__v">{{ user()!.team }}</div>
+            </div>
+            <div class="kv__row">
+              <div class="kv__k">Phone</div>
+              <div class="kv__v">{{ user()!.phone }}</div>
+            </div>
+            <div class="kv__row">
+              <div class="kv__k">Created</div>
+              <div class="kv__v">{{ user()!.created }}</div>
+            </div>
+            <div class="kv__row">
+              <div class="kv__k">Last seen</div>
+              <div class="kv__v">{{ user()!.lastSeen }}</div>
+            </div>
+            <div class="kv__row">
+              <div class="kv__k">Last login IP</div>
+              <div class="kv__v">{{ user()!.lastLoginIp }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head">
+            <div>
+              <div class="panel__title">Permissions</div>
+              <div class="panel__sub">Example template (static)</div>
+            </div>
+          </div>
+
+          <div class="perms">
+            <div class="perm">
+              <div class="perm__name">Payments</div>
+              <div class="perm__desc">View and export payments</div>
+              <span class="tag tag--ok">Enabled</span>
+            </div>
+            <div class="perm">
+              <div class="perm__name">Bank Accounts</div>
+              <div class="perm__desc">View account list</div>
+              <span class="tag tag--ok">Enabled</span>
+            </div>
+            <div class="perm">
+              <div class="perm__name">Compliance</div>
+              <div class="perm__desc">View OFAC queues</div>
+              <span class="tag tag--warn">Limited</span>
+            </div>
+            <div class="perm">
+              <div class="perm__name">Admin</div>
+              <div class="perm__desc">Manage users and settings</div>
+              <span class="tag tag--muted">Depends on role</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel--span">
+          <div class="panel__head">
+            <div class="panel__title">Recent Activity</div>
+          </div>
+
+          <div class="activity">
+            @for (a of activity(); track a.event + a.when) {
+              <div class="activity__row">
+                <div class="activity__left">
+                  <div class="who__name">{{ a.event }}</div>
+                  <div class="who__email">{{ a.when }}</div>
+                </div>
+                <span class="tag" [attr.data-tone]="a.tone">{{ a.tone === 'ok' ? 'Success' : a.tone === 'warn' ? 'Warning' : 'Failed' }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  </main>
+</div>
+

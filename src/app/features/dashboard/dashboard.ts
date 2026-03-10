@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { PaymentsTable } from '../payments/payments-table/payments-table';
+import { AuthService } from '../../core/auth/auth.service';
 
 function toSparkPoints(values: readonly number[], width = 72, height = 22, padding = 2): string {
   if (values.length === 0) return '';
@@ -32,6 +33,7 @@ function toSparkPoints(values: readonly number[], width = 72, height = 22, paddi
 })
 export class Dashboard implements OnDestroy {
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
   readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly dashboardMenuOpen = signal(false);
   readonly outwardPopupOpen = signal(false);
@@ -42,6 +44,10 @@ export class Dashboard implements OnDestroy {
   openMainDashboard(): void {
     this.dashboardMenuOpen.set(true);
     this.router.navigateByUrl('/dashboard');
+  }
+
+  logout(): void {
+    this.auth.logout(true);
   }
 
   openOutwardPopup(): void {

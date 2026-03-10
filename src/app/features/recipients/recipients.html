@@ -1,0 +1,112 @@
+<div class="shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="brand__sub">PAYGLOBAL360</div>
+      <div class="brand__mark">PAY<span class="brand__x">X</span></div>
+    </div>
+
+    <div class="nav">
+      <div class="nav__group">Main</div>
+      <a class="nav__item" routerLink="/dashboard">Dashboard</a>
+      <a class="nav__item" routerLink="/payments">Payments</a>
+
+      <div class="nav__group">Manage</div>
+      <a class="nav__item nav__item--active" routerLink="/recipients">Recipients</a>
+      <a class="nav__item" routerLink="/bank-accounts">Bank Accounts</a>
+      <a class="nav__item" routerLink="/users">Users</a>
+
+      <div class="nav__group">Insights</div>
+      <a class="nav__item" routerLink="/reports">Reports</a>
+      <a class="nav__item" routerLink="/history">History</a>
+
+      <div class="nav__group">Bank Portal</div>
+      <a class="nav__item" routerLink="/bank-dashboard">Bank Dashboard</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__title">
+        <h1>Recipients</h1>
+        <span class="topbar__org">Exportadora Global SA de CV</span>
+      </div>
+    </header>
+
+    <section class="panel" aria-label="Recipients list">
+      <div class="panel__head">
+        <label class="search">
+          <span class="search__icon">Search</span>
+          <input
+            class="search__input"
+            type="search"
+            placeholder="Search recipients..."
+            [value]="query()"
+            (input)="query.set(($any($event.target)).value); page.set(1)"
+          />
+        </label>
+
+        <label class="filter">
+          <span class="filter__label">Status</span>
+          <select class="filter__select" [value]="statusFilter()" (change)="statusFilter.set(($any($event.target)).value); page.set(1)">
+            <option>All</option>
+            <option>Active</option>
+            <option>Pending</option>
+            <option>Blocked</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="table">
+        <div class="thead">
+          <div>Name</div>
+          <div>Country</div>
+          <div>Bank</div>
+          <div>Status</div>
+          <div>Updated</div>
+          <div></div>
+        </div>
+
+        @for (row of pageRows(); track row.email + row.updated) {
+          <div class="trow">
+            <div class="namecell">
+              <div class="avatar" aria-hidden="true">{{ row.initials }}</div>
+              <div class="who">
+                <div class="who__name">{{ row.name }}</div>
+                <div class="who__email">{{ row.email }}</div>
+              </div>
+            </div>
+
+            <div class="muted">{{ row.country }}</div>
+            <div class="muted">{{ row.bank }}</div>
+            <div><span class="status" [attr.data-tone]="row.status.toLowerCase()">{{ row.status }}</span></div>
+            <div class="muted">{{ row.updated }}</div>
+            <button class="more" type="button" aria-label="More">...</button>
+          </div>
+        }
+      </div>
+
+      <div class="tfoot">
+        <div class="rowsize">
+          <span class="muted">Rows per Page</span>
+          <select class="rowsize__select" [value]="pageSize()" (change)="setPageSize(+$any($event.target).value)">
+            <option [value]="10">10</option>
+            <option [value]="20">20</option>
+            <option [value]="50">50</option>
+          </select>
+        </div>
+
+        <div class="pager">
+          <button class="pager__btn" type="button" (click)="prev()">Prev</button>
+          <span class="pager__meta">{{ page() }} / {{ totalPages() }}</span>
+          <button class="pager__btn" type="button" (click)="next()">Next</button>
+        </div>
+
+        <div class="muted">
+          Showing
+          {{ (page() - 1) * pageSize() + 1 }}-{{ Math.min(page() * pageSize(), filtered().length) }}
+          of {{ filtered().length }}
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
+import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
 
@@ -52,14 +53,16 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/dashboard')
-        .then(m => m.Dashboard)
+        .then(m => m.Dashboard),
+    canActivate: [authGuard],
   },
 
   {
     path: 'payments',
     loadComponent: () =>
       import('./features/payments/payments')
-        .then(m => m.Payments)
+        .then(m => m.Payments),
+    canActivate: [authGuard],
   },
 
   {
@@ -67,6 +70,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/bank-dashboard/bank-dashboard')
         .then(m => m.BankDashboard),
+    canActivate: [authGuard],
     children: [
       {
         path: '',

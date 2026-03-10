@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      # enabled | bypass | login_only
+      AUTH_MODE: "bypass"
+      # Set this if you have a separate backend (e.g. http://localhost:8080)
+      API_BASE_URL: ""

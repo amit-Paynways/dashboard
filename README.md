@@ -12,6 +12,34 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## Auth modes (temporary)
+
+This app supports a simple frontend-only auth toggle (no backend required):
+
+- `AUTH_MODE=enabled` (default): protected routes require login
+- `AUTH_MODE=bypass`: bypass login and auto-authenticate
+- `AUTH_MODE=login_only`: force everything back to the login page
+
+## Docker (deployment image)
+
+Build an image:
+
+```bash
+docker build -t angular-auth-app .
+```
+
+Run the container (SSR server on port 4000):
+
+```bash
+docker run --rm -p 4000:4000 -e PORT=4000 -e AUTH_MODE=bypass angular-auth-app
+```
+
+Or with compose:
+
+```bash
+docker compose up --build
+```
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
